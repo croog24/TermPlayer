@@ -1,5 +1,5 @@
-#TermPlayer
+# TermPlayer
 ### A Groovy + mpg123 based radio player.
-##Requirements:
+## Requirements:
 - mpg123
 - Groovy
