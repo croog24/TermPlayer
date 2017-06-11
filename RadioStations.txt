@@ -1,0 +1,6 @@
+// Lines with // will be ignored
+// Lines with # will be considered a new topic
+// Everything else will be considered a station for the above topic
+
+# Classical
+http://38.100.128.106:8000/fmlive
