@@ -26,6 +26,7 @@ cli.with {
 	l longOpt: 'list', 'List available stations'
 	p longOpt: 'play', 'Play the specified station', args : 1
 	h longOpt: 'help', 'Display usage information'
+	k longOpt: 'kill', 'Kill the currently playing station'
 }
 
 def options = cli.parse(args)
@@ -35,23 +36,29 @@ if (!options || options.h) {
 	return
 }
 
+if (options.k) {
+	'killall mpg123'.execute()
+	return
+}
+
 if (options.l) {
 	printStations(stationMap)
+	return
 }
 
 if (options.p) {
 	if (!stationMap.containsKey(options.p)) {
 		println("Did not recognize the specified station: ${options.p}")
 		printStations(stationMap)		
-		System.exit(1)
+		return
 	}
 
-	def sout = new StringBuilder() 
-	def serr = new StringBuilder()
+	// TODO: Add random station selection
 	String station = stationMap.get(options.p).get(0)
 	String command = "/usr/bin/mpg123"
 	def process = [command, station]
 	process.execute()
+	println('Enjoy! Use the -k flag to stop playing.')
 }
 
 void printStations(stationMap) {
