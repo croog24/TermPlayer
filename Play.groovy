@@ -47,14 +47,16 @@ if (options.l) {
 }
 
 if (options.p) {
-	if (!stationMap.containsKey(options.p)) {
-		println("Did not recognize the specified station: ${options.p}")
+    String station = options.p
+	if (!stationMap.containsKey(station)) {
+		println("Did not recognize the specified station: ${station}")
 		printStations(stationMap)		
 		return
 	}
 
-	// TODO: Add random station selection
-	String station = stationMap.get(options.p).get(0)
+	List stationList = stationMap.get(station)
+    int selectedStream = getRandomStation(stationList.size())
+
 	String command = "/usr/bin/mpg123"
 	def process = [command, station]
 	process.execute()
@@ -63,4 +65,8 @@ if (options.p) {
 
 void printStations(stationMap) {
 	stationMap.each{k, v -> println "${k}"}
+}
+
+int getRandomStation(int listSize) {
+    return new Random().nextInt(listSize)
 }

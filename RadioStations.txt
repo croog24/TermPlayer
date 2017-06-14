@@ -4,3 +4,14 @@
 
 # Classical
 http://38.100.128.106:8000/fmlive
+http://8.38.78.173:8045/stream
+http://109.123.116.202:8010/stream
+http://174.36.206.197:8000/stream
+http://109.123.116.202:8022/stream
+http://37.251.146.169:8300/stream
+
+# Electronic
+http://67.222.107.204:7000/stream
+http://198.15.94.34:8030/stream
+http://198.15.94.34:8006/stream
+http://198.15.94.34:8024/stream
