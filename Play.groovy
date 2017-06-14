@@ -54,19 +54,43 @@ if (options.p) {
 		printStations(stationMap)		
 		return
 	}
-	// Kill stream to make sure none are already playing
+	// Kill any existing stream
 	killStream()
 	List stationList = stationMap.get(station)
 
-	String selectedStream = stationList.get(getRandomStation(stationList.size()))
+	// Try a few times in case a bad stream
+	int attempts = 0
+	while(!isStreamPlaying()) {
+		playStream(stationList)
+		// Give it a bit to recognize the process is up and running
+		Thread.sleep(200)
+		attempts++
+		if (attempts == 10) {
+			println("Looks like no currently running streams for this genre :( ")
+			break;
+		}
+	}
 
-	"/usr/bin/mpg123 ${selectedStream}".execute()
 	println('Enjoy! Use the -k flag to stop playing.')
 }
 
+boolean playStream(List stationList) {
+	String stationUrl = stationList.get(getRandomStation(stationList.size()))
+	"/usr/bin/mpg123 ${stationUrl}".execute()
+	return isStreamPlaying()
+}
+
+String getCurrentMpgProc() {
+	return "pgrep mpg123".execute().text
+}
+
+boolean isStreamPlaying() {
+	return (getCurrentMpgProc().length() > 1)
+}	
+
 void killStream() {
-	String mpgPs = "pgrep mpg123".execute().text
-	if (mpgPs.length() > 1) {
+	if (isStreamPlaying()) {
+		String mpgPs = getCurrentMpgProc()
 		println("Stopping current playing stream process: ${mpgPs}")
 		"kill -kill ${mpgPs}".execute()
 	}
