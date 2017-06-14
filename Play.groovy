@@ -37,7 +37,7 @@ if (!options || options.h) {
 }
 
 if (options.k) {
-	'killall mpg123'.execute()
+	killStream()
 	return
 }
 
@@ -54,15 +54,22 @@ if (options.p) {
 		printStations(stationMap)		
 		return
 	}
-
+	// Kill stream to make sure none are already playing
+	killStream()
 	List stationList = stationMap.get(station)
 
 	String selectedStream = stationList.get(getRandomStation(stationList.size()))
 
-	String command = "/usr/bin/mpg123"
-	def process = [command, selectedStream]
-	process.execute()
+	"/usr/bin/mpg123 ${selectedStream}".execute()
 	println('Enjoy! Use the -k flag to stop playing.')
+}
+
+void killStream() {
+	String mpgPs = "pgrep mpg123".execute().text
+	if (mpgPs.length() > 1) {
+		println("Stopping current playing stream process: ${mpgPs}")
+		"kill -kill ${mpgPs}".execute()
+	}
 }
 
 void printStations(stationMap) {
