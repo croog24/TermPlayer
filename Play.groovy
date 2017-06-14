@@ -47,7 +47,8 @@ if (options.l) {
 }
 
 if (options.p) {
-    String station = options.p
+   	String station = options.p
+
 	if (!stationMap.containsKey(station)) {
 		println("Did not recognize the specified station: ${station}")
 		printStations(stationMap)		
@@ -55,10 +56,11 @@ if (options.p) {
 	}
 
 	List stationList = stationMap.get(station)
-    int selectedStream = getRandomStation(stationList.size())
+
+	String selectedStream = stationList.get(getRandomStation(stationList.size()))
 
 	String command = "/usr/bin/mpg123"
-	def process = [command, station]
+	def process = [command, selectedStream]
 	process.execute()
 	println('Enjoy! Use the -k flag to stop playing.')
 }
