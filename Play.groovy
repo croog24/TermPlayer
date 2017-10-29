@@ -1,4 +1,4 @@
-File radioStationFile = new File("./RadioStations.txt")
+def radioStationFile = new File("./RadioStations.txt")
 if (!radioStationFile.exists()) {
 	println("Error: could not find radio station file RadioStations.txt in current folder. Exiting...")
 	System.exit(1)	
@@ -47,10 +47,10 @@ if (options.l) {
 }
 
 if (options.p) {
-   	String station = options.p
+   	def station = options.p
 
 	if (!stationMap.containsKey(station)) {
-		println("Did not recognize the specified station: ${station}")
+		println("Did not recognize the specified station: $station")
 		printStations(stationMap)		
 		return
 	}
@@ -74,32 +74,32 @@ if (options.p) {
 	println('Enjoy! Use the -k flag to stop playing.')
 }
 
-boolean playStream(List stationList) {
-	String stationUrl = stationList.get(getRandomStation(stationList.size()))
+def playStream(List stationList) {
+	def stationUrl = stationList.get(getRandomStation(stationList.size()))
 	"/usr/bin/mpg123 ${stationUrl}".execute()
 	return isStreamPlaying()
 }
 
-String getCurrentMpgProc() {
+def getCurrentMpgProc() {
 	return "pgrep mpg123".execute().text
 }
 
-boolean isStreamPlaying() {
+def isStreamPlaying() {
 	return (getCurrentMpgProc().length() > 1)
 }	
 
-void killStream() {
+def killStream() {
 	if (isStreamPlaying()) {
-		String mpgPs = getCurrentMpgProc()
-		println("Stopping current playing stream process: ${mpgPs}")
-		"kill -kill ${mpgPs}".execute()
+		def mpgPs = getCurrentMpgProc()
+		println("Stopping current playing stream process: $mpgPs")
+		"kill -kill $mpgPs".execute()
 	}
 }
 
-void printStations(stationMap) {
-	stationMap.each{k, v -> println "${k}"}
+def printStations(stationMap) {
+	stationMap.each{k, v -> println "$k"}
 }
 
-int getRandomStation(int listSize) {
+def getRandomStation(int listSize) {
     return new Random().nextInt(listSize)
 }
