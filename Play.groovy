@@ -7,6 +7,7 @@ if (!radioStationFile.exists()) {
 def stationMap = [:]
 String currStation
 
+
 // Initialize station file
 radioStationFile.eachLine{line ->
 	if (line.startsWith('//')) {
@@ -20,6 +21,7 @@ radioStationFile.eachLine{line ->
 		stationMap.get(currStation).add(line)
 	}
 }
+
 
 def cli = new CliBuilder(usage: 'Play.groovy -[command]')
 cli.with {
@@ -67,7 +69,7 @@ if (options.p) {
 		attempts++
 		if (attempts == 10) {
 			println("Looks like no currently running streams for this genre :( ")
-			break;
+			break
 		}
 	}
 
@@ -80,7 +82,7 @@ def playStream(List stationList) {
 	return isStreamPlaying()
 }
 
-def getCurrentMpgProc() {
+static def getCurrentMpgProc() {
 	return "pgrep mpg123".execute().text
 }
 
@@ -100,6 +102,6 @@ def printStations(stationMap) {
 	stationMap.each{k, v -> println "$k"}
 }
 
-def getRandomStation(int listSize) {
+static def getRandomStation(int listSize) {
     return new Random().nextInt(listSize)
 }
